@@ -1,0 +1,53 @@
+﻿@page "/"
+
+@inherits ComponentBase
+
+<MudText Color="Color.Primary" Typo="Typo.h4">Dashboard</MudText>
+<MudDivider Class="my-5"/>
+
+<MudGrid Justify="Justify.FlexStart">
+    <MudItem>
+        <MudButton>
+            <MudPaper Class="d-flex flex-column justify-center align-center" Height="140px" Width="140px">
+                <div class="d-flex flex-row">
+                    <MudText Color="Color.Primary" Typo="Typo.h4" Class="my-auto mr-2" Inline="true">2</MudText>
+                    <MudIcon Color="Color.Primary" Size="Size.Large" Class="my-auto" Icon="@Icons.Material.Filled.Web"></MudIcon>
+                </div>
+                <MudText Color="Color.Primary" Inline="true">Websites</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton>
+            <MudPaper Class="d-flex flex-column justify-center align-center" Height="140px" Width="140px">
+                <div class="d-flex flex-row">
+                    <MudText Color="Color.Primary" Typo="Typo.h4" Class="my-auto mr-2" Inline="true">2</MudText>
+                    <MudIcon Color="Color.Primary" Size="Size.Large" Class="my-auto" Icon="@Icons.Material.Filled.FileOpen"></MudIcon>
+                </div>
+                <MudText Color="Color.Primary" Inline="true">Reports</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton>
+            <MudPaper Class="d-flex flex-column justify-center align-center" Height="140px" Width="140px">
+                <div>
+                    <MudIcon Color="Color.Primary" Size="Size.Large" Icon="@Icons.Material.Filled.Add"></MudIcon>
+                    <MudIcon Color="Color.Primary" Size="Size.Large" Icon="@Icons.Material.Filled.Web"></MudIcon>
+
+                </div>
+                <MudText Color="Color.Primary" Inline="true">Add Website</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton>
+            <MudPaper Class="d-flex flex-column justify-center align-center" Height="140px" Width="140px">
+                <div>
+                    <MudIcon Color="Color.Primary" Size="Size.Large" Icon="@Icons.Material.Filled.Settings"></MudIcon>
+                </div>
+                <MudText Color="Color.Primary" Inline="true">Settings</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+</MudGrid>

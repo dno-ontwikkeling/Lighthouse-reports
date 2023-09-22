@@ -1,0 +1,43 @@
+﻿@page "/websites"
+
+@inherits ComponentBase
+<MudStack Class="mb-3" Row="true" Justify="Justify.SpaceBetween">
+    <MudText Color="Color.Primary" Class="my-auto" Typo="Typo.h4">Websites</MudText>
+    <div class="d-flex flex-row">
+        <MudButton OnClick="RunReports" Disabled="@(!_model.SelectedTableDatas.Any())">Run Report</MudButton>
+        <MudButton OnClick="DeleteWebsites" Disabled="@(!_model.SelectedTableDatas.Any())">Delete</MudButton>
+        <MudDivider Class="ml-4" Vertical="true"></MudDivider>
+        <MudButton OnClick="GoToAddWebsite">Add</MudButton>
+    </div>
+
+</MudStack>
+<MudDivider Class="mb-4"/>
+<MudTable MultiSelection="true" Height="calc(100vh - 320px)" FixedHeader="true" Items="@_model.TableDatas" @bind-SelectedItems="@_model.SelectedTableDatas" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_isLoading" LoadingProgressColor="Color.Info">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField @bind-Value="_model.SearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <NoRecordsContent>
+        Please add a website
+    </NoRecordsContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Url)">Website</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.LastRun)">Last run</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Website">@context.Url</MudTd>
+        <MudTd DataLabel="Last run">
+            @if (context.LastRun != null)
+            {
+                @context.LastRun.Value.ToLocalTime()
+            }
+            else
+            {
+                <span>Hasn't runned yet</span>
+            }
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

@@ -1,0 +1,13 @@
+﻿@using Microsoft.Extensions.Options
+@using LightHouseReports.UI.Options
+@inject NavigationManager NavigationManager
+@inject IOptions<SupportedCulturesOptions> SupportedCulturesOptions
+
+@inherits ComponentBase
+
+<MudSelect Class="ma-2" Variant="Variant.Filled" Label="@Localizer["Language"]" AnchorOrigin="Origin.BottomCenter" @bind-Value="_selectedCulture" @bind-Value:after="@RequestCultureChange" ToStringFunc="SupportedCultureToString" T="SupportedCulture">
+    @foreach (var supportedCulture in _cultures)
+    {
+        <MudSelectItem Value="supportedCulture">@supportedCulture.Display</MudSelectItem>
+    }
+</MudSelect>

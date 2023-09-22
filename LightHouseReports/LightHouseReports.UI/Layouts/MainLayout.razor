@@ -1,0 +1,29 @@
+﻿
+@using Microsoft.AspNetCore.Components.Routing
+@inherits LayoutComponentBase
+<MudThemeProvider IsDarkMode="@true" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1" Dense="false">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="ToggleDrawer" />
+        <MudText>Light House Report Runner</MudText>
+        <MudSpacer />
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_open" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="@DrawerVariant.Mini">
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" Href="/" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/websites" Icon="@Icons.Material.Filled.Web">Websites</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Href="/reports" Icon="@Icons.Material.Filled.FileOpen">Reports</MudNavLink>
+        </MudNavMenu>
+        <MudSpacer></MudSpacer>
+        <MudNavMenu >
+            <MudNavLink Match="NavLinkMatch.All" Class="mt-auto" Href="/settings" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+    <MudMainContent Class="mt-8 px-16">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
