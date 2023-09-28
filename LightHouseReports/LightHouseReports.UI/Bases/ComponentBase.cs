@@ -13,6 +13,7 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase, IDis
     [Inject] public IEventAggregator EventAggregator { get; set; } = null!;
     [Inject] public IMediator Mediator { get; set; } = null!;
     [Inject] public IDialogService DialogService { get; set; } = null!;
+    [Inject] public NavigationManager NavigationManager { get; set; } = null!;
 
     protected override void OnAfterRender(bool firstRender)
     {

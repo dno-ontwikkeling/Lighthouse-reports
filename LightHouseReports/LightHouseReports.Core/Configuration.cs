@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using LightHouseReports.Core.Services;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +9,7 @@ public static class Configuration
 {
     public static IServiceCollection ConfigureCoreApplication(this IServiceCollection services, IConfiguration config)
     {
+        services.AddSingleton<IWebsiteStateService, WebsiteStateService>();
         return services;
     }
 

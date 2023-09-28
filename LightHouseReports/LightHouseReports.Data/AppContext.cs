@@ -5,7 +5,9 @@ namespace LightHouseReports.Data;
 
 public class AppContext : DbContext
 {
-    public DbSet<Website> Websites { get; set; }
+    public DbSet<WebsiteDataModel> Websites { get; set; }
+    public DbSet<ReportDataModel> WebsitesReport { get; set; }
+    public DbSet<UrlReportDataModel> UrlReports { get; set; }
 
     public AppContext(DbContextOptions options) : base(options)
     {
@@ -18,5 +20,8 @@ public class AppContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ReportDataModel>().Navigation(x => x.WebsiteDataModel).AutoInclude();
+        modelBuilder.Entity<UrlReportDataModel>().Navigation(x => x.Report).AutoInclude();
+        modelBuilder.Entity<UrlReportDataModel>().Navigation(x => x.Results).AutoInclude();
     }
 }

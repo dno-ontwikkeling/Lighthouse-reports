@@ -30,29 +30,29 @@ namespace LightHouseReports.Desktop
         /// </summary>
         private void InitializeComponent()
         {
-            this.blazorWebView1 = new BlazorWebView();
-            this.SuspendLayout();
-
+            blazorWebView1 = new BlazorWebView();
+            SuspendLayout();
             // 
             // blazorWebView1
             // 
-            this.blazorWebView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                                                                                | System.Windows.Forms.AnchorStyles.Left)
-                                                                               | System.Windows.Forms.AnchorStyles.Right)));
-            
-            this.blazorWebView1.Name = "blazorWebView1";
-            this.blazorWebView1.Size = new System.Drawing.Size(800, 450);
-            this.blazorWebView1.TabIndex = 20;
+            blazorWebView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            blazorWebView1.Location = new Point(0, 0);
+            blazorWebView1.Margin = new Padding(2, 1, 2, 1);
+            blazorWebView1.Name = "blazorWebView1";
+            blazorWebView1.Size = new Size(431, 211);
+            blazorWebView1.TabIndex = 20;
             // 
             // Application
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.blazorWebView1);
-            this.Name = "Application";
-            this.Text = "Blazor Web in Windows Forms";
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(431, 211);
+            Controls.Add(blazorWebView1);
+            Margin = new Padding(2, 1, 2, 1);
+            Name = "Application";
+            Text = "Blazor Web in Windows Forms";
+            WindowState = FormWindowState.Maximized;
+            ResumeLayout(false);
         }
 
         #endregion

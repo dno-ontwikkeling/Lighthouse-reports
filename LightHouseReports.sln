@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightHouseReports.Common", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightHouseReports.Desktop", "LightHouseReports\LightHouseReports.Desktop\LightHouseReports.Desktop.csproj", "{F3F6DC1F-4E45-469D-9CA6-120D06C2C1C9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightHouseReports.Web", "LightHouseReports\LightHouseReports.Web\LightHouseReports.Web.csproj", "{2A855A70-0F6F-4FBF-908C-6E8B36606909}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{F3F6DC1F-4E45-469D-9CA6-120D06C2C1C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3F6DC1F-4E45-469D-9CA6-120D06C2C1C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3F6DC1F-4E45-469D-9CA6-120D06C2C1C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A855A70-0F6F-4FBF-908C-6E8B36606909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A855A70-0F6F-4FBF-908C-6E8B36606909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A855A70-0F6F-4FBF-908C-6E8B36606909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A855A70-0F6F-4FBF-908C-6E8B36606909}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{E36E90E3-E5F1-4CE3-AC80-0FFA00A3486E} = {F521752D-75C4-4333-8C5C-14EEE6E04E04}
 		{E08FBA7D-6415-41AE-8CA4-135714C37FF9} = {D0E24202-0C99-40FC-8734-6854A0676048}
 		{F3F6DC1F-4E45-469D-9CA6-120D06C2C1C9} = {2E009F4E-7867-4D81-B9F3-30C18A7434A3}
+		{2A855A70-0F6F-4FBF-908C-6E8B36606909} = {2E009F4E-7867-4D81-B9F3-30C18A7434A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23933735-AF70-4C54-AAFC-6A7EC5A60F89}

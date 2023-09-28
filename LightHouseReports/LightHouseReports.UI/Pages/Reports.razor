@@ -1,0 +1,84 @@
+﻿@page "/reports"
+
+@using LightHouseReports.Data.Interfaces.Models
+@inherits ComponentBase
+<MudStack Class="mb-3" Row="true" Justify="Justify.SpaceBetween">
+    <MudText Color="Color.Primary" Class="my-auto" Typo="Typo.h4">Reports</MudText>
+    <MudStack Justify="Justify.FlexEnd" Row="true">
+        <MudSelect Class="ma-0 pa-0" Style="Width: 200px" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Label="Presets" Placeholder="All" T="string" Value="_preset" ValueChanged="ReloadData">
+            @{
+                <MudSelectItem Value="@("All")">All</MudSelectItem>
+
+                foreach (var presetName in Enum.GetNames(typeof(Preset)))
+                {
+                    <MudSelectItem Value="presetName">@presetName</MudSelectItem>
+                }
+            }
+        </MudSelect>
+    </MudStack>
+   
+</MudStack>
+<MudDivider Class="mb-4" />
+<MudTable RowsPerPage="100" Height="calc(100vh - 240px)"
+          GroupBy="@_groupDefinition"
+          FixedHeader="true" Items="@_model.TableDatas"
+          Hover="true" Breakpoint="Breakpoint.Sm" 
+          GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+          Loading="@_isLoading" OnRowClick="@OpenDetails" T="TableData" LoadingProgressColor="Color.Info">
+    <NoRecordsContent>
+        Please run a report
+    </NoRecordsContent>
+    <ColGroup>
+        <col style="width: 60px;" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+    </ColGroup>
+
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.PageUrl)">Page</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.TimeStamp)">Timestamp</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Performance)">Performance</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Accessibility)">Accessibility</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.BestPractices)">Best Practices</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Seo)">Seo</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <GroupHeaderTemplate>
+        <MudTh><MudText Typo="Typo.body2">@context.Items.First().Website</MudText></MudTh>
+        <MudTh><MudText Typo="Typo.body2">@context.Items.First().TimeStamp.LocalDateTime</MudText></MudTh>
+        <MudTh>
+            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.Performance))">@Math.Round(context.Items.Average(x => x.Performance), 0, MidpointRounding.AwayFromZero)</MudText>
+        </MudTh>
+        <MudTh>
+            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.Accessibility))">@Math.Round(context.Items.Average(x => x.Accessibility), 0, MidpointRounding.AwayFromZero)</MudText>
+        </MudTh>
+        <MudTh>
+            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.BestPractices))">@Math.Round(context.Items.Average(x => x.BestPractices), 0, MidpointRounding.AwayFromZero)</MudText>
+        </MudTh>
+        <MudTh>
+            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.Seo))">@Math.Round(context.Items.Average(x => x.Seo), 0, MidpointRounding.AwayFromZero)</MudText>
+        </MudTh>
+        <MudTh>        
+            <MudStack Row="true" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
+                <MudButton OnClick="()=> DeleteReport(context.Items.First().ReportId)">Delete</MudButton>
+            </MudStack>
+        </MudTh>
+    </GroupHeaderTemplate>
+    <RowTemplate>
+        <MudTd DataLabel="PageUrl">@context.PageUrl</MudTd>
+        <MudTd DataLabel="Timestamp"></MudTd>
+        <MudTd DataLabel="Performance"><MudText Color="@GetColorBasedOnValue(context.Performance)">@(context.Performance == 0 ? "?" : context.Performance)</MudText></MudTd>
+        <MudTd DataLabel="Accessibility"><MudText Color="@GetColorBasedOnValue(context.Accessibility)">@(context.Accessibility == 0 ? "?" : context.Accessibility)</MudText></MudTd>
+        <MudTd DataLabel="BestPractices"><MudText Color="@GetColorBasedOnValue(context.BestPractices)">@(context.BestPractices == 0 ? "?" : context.BestPractices)</MudText></MudTd>
+        <MudTd DataLabel="Seo"><MudText Color="@GetColorBasedOnValue(context.Seo)">@(context.Seo == 0 ? "?": context.Seo)</MudText></MudTd>
+        <MudTd/>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new []{100,250,500}" />
+    </PagerContent>
+</MudTable>

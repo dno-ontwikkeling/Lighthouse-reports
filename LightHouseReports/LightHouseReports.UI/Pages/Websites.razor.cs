@@ -1,6 +1,8 @@
 ﻿using EventAggregator.Blazor;
 using FluentResults;
 using LightHouseReports.Common.Mediator;
+using LightHouseReports.Core.Interfaces;
+using LightHouseReports.Core.Interfaces.Models;
 using LightHouseReports.Data.Interfaces;
 using LightHouseReports.Data.Interfaces.Models;
 using LightHouseReports.UI.Components;
@@ -9,7 +11,7 @@ using MudBlazor;
 
 namespace LightHouseReports.UI.Pages;
 
-public partial class Websites : IHandle<WebsitesUpdate>
+public partial class Websites : IHandle<WebsitesUpdate>, IHandle<ReportProgressUpdate>
 {
     private ViewModel _model = new();
     private bool _isLoading = true;
@@ -25,7 +27,7 @@ public partial class Websites : IHandle<WebsitesUpdate>
     {
         _isLoading = true;
         await InvokeAsync(StateHasChanged);
-        var result = await Mediator.Request<GetWebsiteModels, Result<List<Website>>>(new GetWebsiteModels());
+        var result = await Mediator.Request<GetWebsiteCoreModels, Result<List<WebsiteCoreModel>>>(new GetWebsiteCoreModels());
         if (result.IsFailed)
         {
             //TODO
@@ -37,9 +39,16 @@ public partial class Websites : IHandle<WebsitesUpdate>
         }
     }
 
-    private void RunReports()
+    private async Task RunReport(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await Mediator.Send(new RunLighthouseWebsiteReport(id));
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
     }
 
     private void GoToAddWebsite()
@@ -55,11 +64,11 @@ public partial class Websites : IHandle<WebsitesUpdate>
         }
     }
 
-    private void DeleteWebsites()
+    private async Task ArchiveWebsite(Guid id)
     {
         try
         {
-            foreach (var modelSelectedTableData in _model.SelectedTableDatas) Mediator.Send(new RemoveWebsiteModel(modelSelectedTableData.Id));
+            await Mediator.Send(new ArchiveWebsiteDataModel(id));
         }
         catch (Exception)
         {
@@ -72,9 +81,13 @@ public partial class Websites : IHandle<WebsitesUpdate>
         await ReloadData();
     }
 
+    public async Task HandleAsync(ReportProgressUpdate message)
+    {
+        await ReloadData();
+    }
+
     private class ViewModel
     {
-        public HashSet<TableData> SelectedTableDatas { get; set; } = new();
         public string SearchString { get; set; }
         public int CountOfWebsites { get; set; }
         public List<TableData> TableDatas { get; set; }
@@ -83,10 +96,10 @@ public partial class Websites : IHandle<WebsitesUpdate>
         {
         }
 
-        public ViewModel(List<Website> websiteModels)
+        public ViewModel(List<WebsiteCoreModel> websiteModels)
         {
             CountOfWebsites = websiteModels.Count();
-            TableDatas = websiteModels.Select(x => new TableData(x.Url, x.Id, x.LastRun)).ToList();
+            TableDatas = websiteModels.Select(x => new TableData(x.Url, x.Id, x.LastRun, x.FoundUrls, x.ProgressReport)).ToList();
         }
     }
 
@@ -94,13 +107,17 @@ public partial class Websites : IHandle<WebsitesUpdate>
     {
         public Guid Id { get; set; }
         public string Url { get; set; }
+        public int UrlsFound { get; set; }
         public DateTimeOffset? LastRun { get; set; }
+        public ProgressCoreModel? ProgressReport { get; set; }
 
-        public TableData(string url, Guid id, DateTimeOffset? lastRun)
+        public TableData(string url, Guid id, DateTimeOffset? lastRun, int urlsFound, ProgressCoreModel? progressReport)
         {
             Url = url;
             Id = id;
             LastRun = lastRun;
+            UrlsFound = urlsFound;
+            ProgressReport = progressReport;
         }
     }
 }

@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LightHouseReports.Data.Consumers.Website;
 
-public class GetWebsiteModelsConsumer : DataRequestConsumer<GetWebsiteModels, Result<List<LightHouseReports.Data.Interfaces.Models.Website>>>
+public class GetWebsiteDataModelsConsumer : DataRequestConsumer<GetWebsiteDataModels, Result<List<Interfaces.Models.WebsiteDataModel>>>
 {
     private readonly AppContext _context;
 
-    public GetWebsiteModelsConsumer(AppContext context)
+    public GetWebsiteDataModelsConsumer(AppContext context)
     {
         _context = context;
     }
 
-    protected override async Task<Result<List<LightHouseReports.Data.Interfaces.Models.Website>>> Consume(GetWebsiteModels message, CancellationToken cancellationToken)
+    protected override async Task<Result<List<Interfaces.Models.WebsiteDataModel>>> Consume(GetWebsiteDataModels message, CancellationToken cancellationToken)
     {
         try
         {

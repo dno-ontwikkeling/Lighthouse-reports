@@ -1,0 +1,66 @@
+﻿@page "/report/detail/{Id:guid}"
+
+
+@inherits ComponentBase
+
+<MudStack Class="mb-3" Row="true" Justify="Justify.SpaceBetween">
+    <MudText Color="Color.Primary" Class="my-auto" Typo="Typo.h4">Report details</MudText>
+    <MudButton Href="/reports" Variant="Variant.Filled" Color="Color.Primary">Back</MudButton>
+</MudStack>
+<MudDivider Class="mb-4" />
+<MudStack Class="mb-5">
+    <MudGrid>
+        <MudItem xs="3">
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.subtitle2">Timestamp</MudText>
+                <MudText Typo="Typo.body1">@_model.TimeStamp</MudText>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="3">
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.subtitle2">Website</MudText>
+                <MudText Typo="Typo.body1">@_model.Website</MudText>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="3">
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.subtitle2">Page</MudText>
+                <MudText Typo="Typo.body1">@_model.PageUrl</MudText>
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+</MudStack>
+<MudDivider></MudDivider>
+
+<MudTable Height="calc(100vh - 340px)"
+          FixedHeader="true" Items="@_model.TableDatas"
+          Hover="true" Breakpoint="Breakpoint.Sm"
+          Loading="@_isLoading" LoadingProgressColor="Color.Info">
+    
+   
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x => x.Preset)">Device</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x => x.Performance)">Performance</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x => x.Accessibility)">Accessibility</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x => x.BestPractices)">Best Practices</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x => x.Seo)">Seo</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Preset">@context.Preset</MudTd>
+        <MudTd DataLabel="Performance"><MudText Color="@GetColorBasedOnValue(context.Performance)">@(context.Performance == 0 ? "?" : context.Performance)</MudText></MudTd>
+        <MudTd DataLabel="Accessibility"><MudText Color="@GetColorBasedOnValue(context.Accessibility)">@(context.Accessibility == 0 ? "?" : context.Accessibility)</MudText></MudTd>
+        <MudTd DataLabel="BestPractices"><MudText Color="@GetColorBasedOnValue(context.BestPractices)">@(context.BestPractices == 0 ? "?" : context.BestPractices)</MudText></MudTd>
+        <MudTd DataLabel="Seo"><MudText Color="@GetColorBasedOnValue(context.Seo)">@(context.Seo == 0 ? "?" : context.Seo)</MudText></MudTd>
+        <MudTd DataLabel="Action">
+            <MudStack Row="true" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
+                <MudButton OnClick="() => OpenReport(context.Preset)">Open</MudButton>
+                <MudButton OnClick="() => DeleteReport(context.ResultId)">Delete</MudButton>
+            </MudStack>
+        </MudTd>
+
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>

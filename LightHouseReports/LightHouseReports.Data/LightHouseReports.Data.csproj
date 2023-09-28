@@ -18,8 +18,4 @@
     <ProjectReference Include="..\LightHouseReports.UI.Interfaces\LightHouseReports.UI.Interfaces.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

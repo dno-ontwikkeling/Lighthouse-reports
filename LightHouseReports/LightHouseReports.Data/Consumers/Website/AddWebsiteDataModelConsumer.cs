@@ -5,22 +5,22 @@ using MassTransit.Mediator;
 
 namespace LightHouseReports.Data.Consumers.Website;
 
-public class AddWebsiteModelConsumer : CommandRequestConsumer<AddWebsiteModel>
+public class AddWebsiteDataModelConsumer : CommandRequestConsumer<AddWebsiteDataModel>
 {
     private readonly AppContext _context;
     private readonly IMediator _mediator;
 
-    public AddWebsiteModelConsumer(AppContext context, IMediator mediator)
+    public AddWebsiteDataModelConsumer(AppContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;
     }
 
-    protected override async Task Consume(AddWebsiteModel message, CancellationToken cancellationToken)
+    protected override async Task Consume(AddWebsiteDataModel message, CancellationToken cancellationToken)
     {
         try
         {
-            _context.Websites.Add(message.Website);
+            _context.Websites.Add(message.WebsiteDataModel);
             await _context.SaveChangesAsync(cancellationToken);
             await _mediator.Send(new EventMessageCommand(new WebsitesUpdate()), cancellationToken);
         }

@@ -4,12 +4,24 @@ using LightHouseReports.Data.Interfaces.Models;
 
 namespace LightHouseReports.Data.Interfaces;
 
-public record GetWebsiteModels : IDataRequest<Result<List<Website>>>;
+public record GetWebsiteDataModels : IDataRequest<Result<List<WebsiteDataModel>>>;
 
-public record GetWebsiteModel(Guid Id) : IDataRequest<Result<Website>>;
+public record GetWebsiteDataModel(Guid Id) : IDataRequest<Result<WebsiteDataModel>>;
 
-public record AddWebsiteModel(Website Website) : ICommandRequest;
+public record AddWebsiteDataModel(WebsiteDataModel WebsiteDataModel) : ICommandRequest;
 
-public record RemoveWebsiteModel(Guid Id) : ICommandRequest;
+public record ArchiveWebsiteDataModel(Guid Id) : ICommandRequest;
 
-public record UpdateWebsiteModel(Website Website) : ICommandRequest;
+public record UpdateWebsiteDataModel(WebsiteDataModel WebsiteDataModel) : ICommandRequest;
+
+public record GetUrlReportDataModels : IDataRequest<Result<List<UrlReportDataModel>>>;
+
+public record GetUrlReportDataModelsForReport(Guid ReportId) : IDataRequest<List<UrlReportDataModel>>;
+
+public record GetUrlReportDataModel(Guid Id) : IDataRequest<Result<UrlReportDataModel>>;
+
+public record AddUrlReportDataModel(UrlReportDataModel ReportDataModel) : ICommandRequest;
+
+public record DeleteUrlReportDataModel(Guid Id) : ICommandRequest;
+
+public record DeleteReportDataModel(Guid Id) : ICommandRequest;

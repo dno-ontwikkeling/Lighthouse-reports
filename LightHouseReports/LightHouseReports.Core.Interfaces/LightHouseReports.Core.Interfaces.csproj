@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LightHouseReports.Common\LightHouseReports.Common.csproj" />
+    <ProjectReference Include="..\LightHouseReports.Data.Interfaces\LightHouseReports.Data.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

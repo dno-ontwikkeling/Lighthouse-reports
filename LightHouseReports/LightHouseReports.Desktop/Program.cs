@@ -36,6 +36,7 @@ internal static class Program
         return Host.CreateDefaultBuilder()
             .ConfigureServices((context, services) =>
             {
+                services.AddBlazorWebViewDeveloperTools();
                 //Own configs
                 services.ConfigureDesktopApplication(context.Configuration);
                 services.ConfigureCommon(context.Configuration);
