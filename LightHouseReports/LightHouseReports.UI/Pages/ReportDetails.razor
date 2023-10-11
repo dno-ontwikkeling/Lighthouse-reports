@@ -54,7 +54,7 @@
         <MudTd DataLabel="Seo"><MudText Color="@GetColorBasedOnValue(context.Seo)">@(context.Seo == 0 ? "?" : context.Seo)</MudText></MudTd>
         <MudTd DataLabel="Action">
             <MudStack Row="true" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
-                <MudButton OnClick="() => OpenReport(context.Preset)">Open</MudButton>
+                <MudButton Href="@context.Href" Target="_blank">Open</MudButton>
                 <MudButton OnClick="() => DeleteReport(context.ResultId)">Delete</MudButton>
             </MudStack>
         </MudTd>

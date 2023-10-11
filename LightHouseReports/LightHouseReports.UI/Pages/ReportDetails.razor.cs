@@ -1,10 +1,12 @@
-﻿using FluentResults;
+﻿using System.Runtime.InteropServices;
+using FluentResults;
 using LightHouseReports.Common.Mediator;
 using LightHouseReports.Core.Interfaces;
 using LightHouseReports.Data.Interfaces;
 using LightHouseReports.Data.Interfaces.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Text;
 
 namespace LightHouseReports.UI.Pages;
 
@@ -25,10 +27,10 @@ public partial class ReportDetails
         await base.OnInitializedAsync();
     }
 
-    private async Task OpenReport(Preset preset)
+    private string OpenReport(Preset preset)
     {
-        var path = $".\\Reports\\{_model.ReportId}\\{_model.UrlId}\\{preset.ToString().ToLowerInvariant()}.report.html";
-        await Mediator.Send(new OpenLighthouseReport(path));
+        var path = $"\\Reports\\{_model.ReportId}\\{_model.UrlId}\\{preset.ToString().ToLowerInvariant()}.report.html";
+        return path;
     }
 
     private Task DeleteReport(Guid contextResultId)
@@ -76,30 +78,29 @@ public partial class ReportDetails
             ReportId = dataModel.Report.Id;
             TimeStamp = dataModel.Report.TimeStamp;
             PageUrl = dataModel.Adres;
-            TableDatas = dataModel.Results.Select(x => new TableData(x.Id, x.Preset, x.Performance, x.Accessibility, x.BestPractices, x.Seo)).ToList();
+            TableDatas = dataModel.Results.Select(x => new TableData(x.Id, x.Preset, x.Performance, x.Accessibility, x.BestPractices, x.Seo, $"\\Reports\\{ReportId}\\{UrlId}\\{x.Preset.ToString().ToLowerInvariant()}.report.html")).ToList();
         }
     }
 
     public class TableData
     {
-        public TableData(Guid resultId, Preset preset, int performance, int accessibility, int bestPractices, int seo)
+        public TableData(Guid resultId, Preset preset, int performance, int accessibility, int bestPractices, int seo, string href)
         {
             Preset = preset;
             Performance = performance;
             Accessibility = accessibility;
             BestPractices = bestPractices;
             Seo = seo;
+            Href = href;
             ResultId = resultId;
         }
 
         public Guid ResultId { get; set; }
         public Preset Preset { get; set; }
         public int Performance { get; set; }
-
         public int Accessibility { get; set; }
-
         public int BestPractices { get; set; }
-
         public int Seo { get; set; }
+        public string Href { get; set; }
     }
 }

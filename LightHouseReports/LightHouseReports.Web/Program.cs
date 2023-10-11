@@ -6,6 +6,11 @@ using LightHouseReports.UI;
 using LightHouseReports.Web;
 using Serilog;
 using Configuration = LightHouseReports.Web.Configuration;
+using System.Reflection;
+
+
+var exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+if (exeDir != null) Directory.SetCurrentDirectory(exeDir);
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -40,8 +45,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions()
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "../LightHouseReports.UI/Images")),
-    RequestPath = new PathString("/Images")
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "./Reports")),
+    RequestPath = new PathString("/Reports")
 });
 
 Configuration.UseConfiguredRequestLocalization(app, builder.Configuration);

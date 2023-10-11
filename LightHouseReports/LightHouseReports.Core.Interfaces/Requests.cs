@@ -12,8 +12,6 @@ public record GetWebsiteCoreModels : IDataRequest<Result<List<WebsiteCoreModel>>
 
 public record GetSitemapCoreModel(string SitemapUrl) : IDataRequest<Result<SitemapCoreModel>>;
 
-public record OpenLighthouseReport(string path) : ICommandRequest;
-
 public record DeleteReportAndCleanUpFiles(Guid ReportIdGuid) : ICommandRequest;
 
 public record DeleteLighthouseResult(Guid LighthouseResutlId) : ICommandRequest;
