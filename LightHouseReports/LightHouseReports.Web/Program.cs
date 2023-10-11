@@ -1,13 +1,12 @@
-using Microsoft.Extensions.FileProviders;
+using System.Reflection;
 using LightHouseReports.Common;
 using LightHouseReports.Core;
 using LightHouseReports.Data;
 using LightHouseReports.UI;
 using LightHouseReports.Web;
+using Microsoft.Extensions.FileProviders;
 using Serilog;
 using Configuration = LightHouseReports.Web.Configuration;
-using System.Reflection;
-
 
 var exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 if (exeDir != null) Directory.SetCurrentDirectory(exeDir);
@@ -43,6 +42,11 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+if (!Directory.Exists("./Reports"))
+{
+    Directory.CreateDirectory("./Reports");
+}
+
 app.UseStaticFiles(new StaticFileOptions()
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "./Reports")),

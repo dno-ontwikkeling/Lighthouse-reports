@@ -1,19 +1,17 @@
-﻿using LightHouseReports.Common.Mediator;
-using LightHouseReports.Core.Interfaces;
-using System.Management.Automation;
+﻿using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentResults;
+using LightHouseReports.Common.Mediator;
+using LightHouseReports.Core.Interfaces;
+using LightHouseReports.Core.Interfaces.Models;
+using LightHouseReports.Core.Services;
 using LightHouseReports.Data.Interfaces;
 using LightHouseReports.Data.Interfaces.Models;
 using MassTransit.Mediator;
-using LightHouseReports.Core.Interfaces.Models;
-using LightHouseReports.Core.Services;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
-using System.Management.Automation.Runspaces;
-using System.Drawing;
-using System;
+using Microsoft.PowerShell;
 
 namespace LightHouseReports.Core.Consumers;
 
@@ -66,7 +64,7 @@ public class RunLighthouseWebsiteReportConsumer : DataRequestConsumer<RunLightho
 
                     // Create an initial default session state.
                     var initialSessionState = InitialSessionState.CreateDefault2();
-                    initialSessionState.ExecutionPolicy = Microsoft.PowerShell.ExecutionPolicy.Bypass;
+                    initialSessionState.ExecutionPolicy = ExecutionPolicy.Bypass;
 
                     //Run light house script
                     var ps = PowerShell.Create(initialSessionState);
@@ -90,7 +88,6 @@ public class RunLighthouseWebsiteReportConsumer : DataRequestConsumer<RunLightho
             }
 
             await _mediator.Send(new UpdateWebsiteDataModel(website), cancellationToken);
-            ;
 
             return Result.Ok();
         }

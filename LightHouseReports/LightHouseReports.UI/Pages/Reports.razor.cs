@@ -14,11 +14,12 @@ public partial class Reports : IHandle<ReportUpdate>
     private bool _isLoading;
     private ViewModel _model = new();
 
-    private readonly TableGroupDefinition<TableData> _groupDefinition = new()
+    private readonly TableGroupDefinition<TableData> _groupDefinition = new ()
     {
         Indentation = false,
         Expandable = true,
-        Selector = (e) => e.ReportId
+        Selector = e => e.ReportId,
+        IsInitiallyExpanded = false
     };
 
     private string _preset = "All";
