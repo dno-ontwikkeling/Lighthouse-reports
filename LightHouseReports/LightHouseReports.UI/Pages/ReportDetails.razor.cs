@@ -1,12 +1,9 @@
-﻿using System.Runtime.InteropServices;
-using FluentResults;
+﻿using FluentResults;
 using LightHouseReports.Common.Mediator;
-using LightHouseReports.Core.Interfaces;
 using LightHouseReports.Data.Interfaces;
 using LightHouseReports.Data.Interfaces.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.Text;
 
 namespace LightHouseReports.UI.Pages;
 
@@ -73,7 +70,7 @@ public partial class ReportDetails
         public ViewModel(UrlReportDataModel dataModel)
         {
             WebsiteId = dataModel.Report.WebsiteDataModel.Id;
-            Website = dataModel.Report.WebsiteDataModel.Url;
+            Website = dataModel.Report.WebsiteDataModel.WebisteUrl;
             UrlId = dataModel.Id;
             ReportId = dataModel.Report.Id;
             TimeStamp = dataModel.Report.TimeStamp;

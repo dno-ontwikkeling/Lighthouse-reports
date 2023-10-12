@@ -32,19 +32,22 @@ public partial class Reports : IHandle<ReportUpdate>
 
     private async Task ReloadData(string preset = "All")
     {
-        _preset = preset;
-        _isLoading = true;
-        await InvokeAsync(StateHasChanged);
-        var result = await Mediator.Request<GetUrlReportDataModels, Result<List<UrlReportDataModel>>>(new GetUrlReportDataModels());
+        try
+        {
+            _preset = preset;
+            _isLoading = true;
+            await InvokeAsync(StateHasChanged);
+            var result = await Mediator.Request<GetUrlReportDataModels, Result<List<UrlReportDataModel>>>(new GetUrlReportDataModels());
 
-        if (result.IsFailed)
-        {
-            //TODO
+            if (result.IsSuccess)
+            {
+                _model = new ViewModel(result.Value, preset);
+                _isLoading = false;
+            }
         }
-        else
+        catch (Exception)
         {
-            _model = new ViewModel(result.Value, preset);
-            _isLoading = false;
+            // ignored
         }
     }
 
@@ -54,8 +57,9 @@ public partial class Reports : IHandle<ReportUpdate>
         {
             await Mediator.Send(new DeleteReportAndCleanUpFiles(reportId));
         }
-        catch (Exception e)
+        catch (Exception)
         {
+            // ignored
         }
     }
 
@@ -81,27 +85,49 @@ public partial class Reports : IHandle<ReportUpdate>
         return Color.Default;
     }
 
+    private static int Round(UrlReportDataModel data, bool takeAll, Preset presetValue, string valueKey)
+    {
+        var selection = data.Results.Where(x => takeAll || (x.Preset == presetValue && (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0) != 0)).ToList();
+        if (selection.Any())
+        {
+            return (int)Math.Round(selection.Average(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0)), 0, MidpointRounding.AwayFromZero);
+        }
+
+        return 0;
+    }
+
+    private static int Round(IEnumerable<TableData> data, string valueKey)
+    {
+        var selection = data.Where(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0) != 0).ToList();
+        if (selection.Any())
+        {
+            return (int)Math.Round(selection.Average(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0)), 0, MidpointRounding.AwayFromZero);
+        }
+
+        return 0;
+    }
+
     public class ViewModel
     {
-        public List<TableData> TableDatas { get; set; }
+        public List<TableData>? TableData { get; }
 
         public ViewModel()
         {
         }
 
-        public ViewModel(List<UrlReportDataModel> dataModel, string preset)
+        public ViewModel(IEnumerable<UrlReportDataModel> dataModel, string preset)
         {
-            TableDatas = dataModel.Select(x =>
+            TableData = dataModel.Select(x =>
             {
                 var takeAll = !Enum.TryParse(preset, true, out Preset presetValue);
-                var performance = (int)Math.Round(x.Results.Where(x => takeAll || x.Preset == presetValue).Average(x => x.Performance), 0, MidpointRounding.AwayFromZero);
-                var accessibility = (int)Math.Round(x.Results.Where(x => takeAll || x.Preset == presetValue).Average(x => x.Accessibility), 0, MidpointRounding.AwayFromZero);
-                var bestPractices = (int)Math.Round(x.Results.Where(x => takeAll || x.Preset == presetValue).Average(x => x.BestPractices), 0, MidpointRounding.AwayFromZero);
-                var seo = (int)Math.Round(x.Results.Where(x => takeAll || x.Preset == presetValue).Average(x => x.Seo), 0, MidpointRounding.AwayFromZero);
+                var performance = Round(x, takeAll, presetValue, "Performance");
+                var accessibility = Round(x, takeAll, presetValue, "Accessibility");
+                var bestPractices = Round(x, takeAll, presetValue, "BestPractices");
+                var seo = Round(x, takeAll, presetValue, "Seo");
 
                 return new TableData(x.Report.TimeStamp,
                     x.Report.WebsiteDataModel.Id,
-                    x.Report.WebsiteDataModel.Url,
+                    x.Report.WebsiteDataModel.WebisteUrl,
                     x.Report.Id,
                     x.Id,
                     x.Adres,

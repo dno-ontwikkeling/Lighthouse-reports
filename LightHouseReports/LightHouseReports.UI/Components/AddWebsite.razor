@@ -6,22 +6,23 @@
     <DialogContent>
         <EditForm @ref="_editFrom" Model="_input" OnSubmit="AddWebsiteModel">
             
-            <MudTextField Style="Width: 500px" @bind-Value="_input.Website" Clearable="true" For="() => _input.Website" OnClearButtonClick="(() => { _input = new Input(); })" Label="Website" Variant="Variant.Filled" T="string"></MudTextField>
-            
+            <MudTextField T="string" Style="Width: 500px" @bind-Value="_input.Name" For="() => _input.Name" Label="Name" Variant="Variant.Filled" />
+            <MudTextField T="string" Style="Width: 500px" @bind-Value="_input.Website" For="() => _input.Website" Label="Website" Variant="Variant.Filled" />
+            <MudTextField T="string" Style="Width: 500px" @bind-Value="_input.Sitemaps" For="() => _input.Sitemaps" Label="Sitemaps" Variant="Variant.Filled" Lines="3" />
+
             <MudStack Class="my-3" Row="true" Justify="Justify.SpaceBetween">
                 <MudButton Class="float-end mt-2 d-block" OnClick="CloseDialog" Variant="Variant.Text"> Cancel</MudButton>
                 @if (_isValidating)
                 {
                     <MudStack Row="true" AlignItems="AlignItems.Center">
                         <MudProgressCircular Size="Size.Small" Indeterminate="true"></MudProgressCircular>
-                        <MudText Class="my-auto" Inline="true" >Is valditing url</MudText>
+                        <MudText Class="my-auto" Inline="true" >Is validating urls</MudText>
                     </MudStack>
            
                 }
                 else
                 {
                     <MudButton Class="float-end mt-2 d-block" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit"> Add</MudButton>
-
                 }
             </MudStack>
         </EditForm>

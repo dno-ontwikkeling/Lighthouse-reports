@@ -2,6 +2,7 @@
 
 @using LightHouseReports.Data.Interfaces.Models
 @inherits ComponentBase
+
 <MudStack Class="mb-3" Row="true" Justify="Justify.SpaceBetween">
     <MudText Color="Color.Primary" Class="my-auto" Typo="Typo.h4">Reports</MudText>
     <MudStack Justify="Justify.FlexEnd" Row="true">
@@ -21,7 +22,7 @@
 <MudDivider Class="mb-4" />
 <MudTable RowsPerPage="100" Height="calc(100vh - 240px)"
           GroupBy="@_groupDefinition"
-          FixedHeader="true" Items="@_model.TableDatas"
+          FixedHeader="true" Items="@_model.TableData"
           Hover="true" Breakpoint="Breakpoint.Sm" 
           GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
           Loading="@_isLoading" OnRowClick="@OpenDetails" T="TableData" LoadingProgressColor="Color.Info">
@@ -52,16 +53,16 @@
         <MudTh><MudText Typo="Typo.body2">@context.Items.First().Website</MudText></MudTh>
         <MudTh><MudText Typo="Typo.body2">@context.Items.First().TimeStamp.LocalDateTime</MudText></MudTh>
         <MudTh>
-            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.Performance))">@Math.Round(context.Items.Average(x => x.Performance), 0, MidpointRounding.AwayFromZero)</MudText>
+            <MudText Color="@GetColorBasedOnValue(Round(context.Items,"Performance"))">@Round(context.Items, "Performance")</MudText>
         </MudTh>
         <MudTh>
-            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.Accessibility))">@Math.Round(context.Items.Average(x => x.Accessibility), 0, MidpointRounding.AwayFromZero)</MudText>
+            <MudText Color="@GetColorBasedOnValue(Round(context.Items,"Accessibility"))">@Round(context.Items, "Accessibility")</MudText>
         </MudTh>
         <MudTh>
-            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.BestPractices))">@Math.Round(context.Items.Average(x => x.BestPractices), 0, MidpointRounding.AwayFromZero)</MudText>
+            <MudText Color="@GetColorBasedOnValue(Round(context.Items,"BestPractices"))">@Round(context.Items, "BestPractices")</MudText>
         </MudTh>
         <MudTh>
-            <MudText Color="@GetColorBasedOnValue(context.Items.Average(x => x.Seo))">@Math.Round(context.Items.Average(x => x.Seo), 0, MidpointRounding.AwayFromZero)</MudText>
+            <MudText Color="@GetColorBasedOnValue(Round(context.Items,"Seo"))">@Round(context.Items, "Seo")</MudText>
         </MudTh>
         <MudTh>        
             <MudStack Row="true" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">

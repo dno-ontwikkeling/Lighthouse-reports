@@ -17,7 +17,7 @@ public class WebsiteCoreModel
     public WebsiteCoreModel(WebsiteDataModel dataModel, ProgressCoreModel? progressReport)
     {
         Id = dataModel.Id;
-        Url = dataModel.Url;
+        Url = dataModel.WebisteUrl;
         LastRun = dataModel.LastRun;
         FoundUrls = dataModel.FoundUrls;
         ProgressReport = progressReport;

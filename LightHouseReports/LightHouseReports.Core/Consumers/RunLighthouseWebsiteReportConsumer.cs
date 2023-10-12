@@ -43,7 +43,7 @@ public class RunLighthouseWebsiteReportConsumer : DataRequestConsumer<RunLightho
         };
         try
         {
-            var sitemapResult = await _mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(website.Url), cancellationToken);
+            var sitemapResult = await _mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(website.WebisteUrl), cancellationToken);
             if (sitemapResult.IsFailed) return sitemapResult.ToResult();
             var sitemap = sitemapResult.Value;
 

@@ -6,7 +6,6 @@ using LightHouseReports.Core.Interfaces;
 using LightHouseReports.Core.Interfaces.Models;
 using LightHouseReports.Data.Interfaces;
 using LightHouseReports.Data.Interfaces.Models;
-using LightHouseReports.UI.Pages;
 using MassTransit.Mediator;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -18,7 +17,7 @@ public partial class AddWebsite
 {
     [CascadingParameter] public MudDialogInstance MudDialog { get; set; } = null!;
     private EditForm _editFrom = null!;
-    private bool _isValidating = false;
+    private bool _isValidating;
     private Input _input = new();
 
     private async Task AddWebsiteModel()
@@ -26,10 +25,10 @@ public partial class AddWebsite
         try
         {
             var result = await ValidateInput();
-            if (result is not null && result.IsValid)
+            if (result.IsValid)
             {
                 var baseUri = new UriBuilder(_input.Website).Uri;
-                var siteMapUri = new Uri(baseUri!, "sitemap.xml");
+                var siteMapUri = new Uri(baseUri, "sitemap.xml");
                 var sitmapResult = await Mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(siteMapUri.ToString()));
 
                 await Mediator.Send(new AddWebsiteDataModel(new WebsiteDataModel(Guid.NewGuid(), _input.Website, sitmapResult.Value.Locs.Count)));
@@ -93,7 +92,9 @@ public partial class AddWebsite
 
     public class Input
     {
+        public string Name { get; set; }
         public string Website { get; set; } = string.Empty;
+        public string Sitemaps { get; set; } = string.Empty;
     }
 
     public class Validator : AbstractValidator<Input>
@@ -101,20 +102,41 @@ public partial class AddWebsite
         public Validator(IMediator mediator)
         {
             RuleFor(x => x.Website).NotEmpty();
-            RuleFor(x => x.Website).CustomAsync(async (website, context, ct) =>
+            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Website).CustomAsync(async (website, context, _) =>
             {
                 try
                 {
                     var baseUri = new UriBuilder(website).Uri;
-                    var siteMapUri = new Uri(baseUri!, "sitemap.xml");
+                    var siteMapUri = new Uri(baseUri, "sitemap.xml");
                     var result = await mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(siteMapUri.ToString()));
                     if (result.IsFailed) context.AddFailure("Can't access the sitemap");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     context.AddFailure("Invaild url");
                 }
-            });
+            }).When(x => string.IsNullOrWhiteSpace(x.Sitemaps));
+
+            RuleFor(x => x.Sitemaps).CustomAsync(async (website, context, _) =>
+            {
+                var sitemaps = website.Split(",").Select(x => x.Trim());
+
+                try
+                {
+                    foreach (var sitemap in sitemaps)
+                    {
+                        var baseUri = new UriBuilder(website).Uri;
+                        var siteMapUri = new Uri(baseUri, "sitemap.xml");
+                        var result = await mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(siteMapUri.ToString()));
+                        if (result.IsFailed) context.AddFailure($"Can't access the sitemap {sitemap}");
+                    }
+                }
+                catch (Exception)
+                {
+                    context.AddFailure("Invaild url");
+                }
+            }).When(x => !string.IsNullOrWhiteSpace(x.Sitemaps));
         }
     }
 }
