@@ -1,4 +1,4 @@
-﻿using EventAggregator.Blazor;
+using EventAggregator.Blazor;
 using FluentResults;
 using LightHouseReports.Common.Mediator;
 using LightHouseReports.Core.Interfaces;
