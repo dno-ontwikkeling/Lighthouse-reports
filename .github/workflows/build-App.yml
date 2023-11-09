@@ -1,7 +1,7 @@
 name: Build ASP.Net Core app 
 
 env:
-  DOTNET_VERSION: '6.0.x'                 # set this to the .NET Core version to use
+  DOTNET_VERSION: '7.0.x'                 # set this to the .NET Core version to use
 
 on:
   workflow_dispatch:
