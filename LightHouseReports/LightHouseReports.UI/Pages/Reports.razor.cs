@@ -14,7 +14,7 @@ public partial class Reports : IHandle<ReportUpdate>
     private bool _isLoading;
     private ViewModel _model = new();
 
-    private readonly TableGroupDefinition<TableData> _groupDefinition = new ()
+    private readonly TableGroupDefinition<TableData> _groupDefinition = new()
     {
         Indentation = false,
         Expandable = true,
@@ -88,10 +88,7 @@ public partial class Reports : IHandle<ReportUpdate>
     private static int Round(UrlReportDataModel data, bool takeAll, Preset presetValue, string valueKey)
     {
         var selection = data.Results.Where(x => takeAll || (x.Preset == presetValue && (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0) != 0)).ToList();
-        if (selection.Any())
-        {
-            return (int)Math.Round(selection.Average(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0)), 0, MidpointRounding.AwayFromZero);
-        }
+        if (selection.Any()) return (int)Math.Round(selection.Average(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0)), 0, MidpointRounding.AwayFromZero);
 
         return 0;
     }
@@ -99,10 +96,7 @@ public partial class Reports : IHandle<ReportUpdate>
     private static int Round(IEnumerable<TableData> data, string valueKey)
     {
         var selection = data.Where(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0) != 0).ToList();
-        if (selection.Any())
-        {
-            return (int)Math.Round(selection.Average(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0)), 0, MidpointRounding.AwayFromZero);
-        }
+        if (selection.Any()) return (int)Math.Round(selection.Average(x => (int)(x.GetType().GetProperty(valueKey)?.GetValue(x) ?? 0)), 0, MidpointRounding.AwayFromZero);
 
         return 0;
     }
@@ -127,7 +121,7 @@ public partial class Reports : IHandle<ReportUpdate>
 
                 return new TableData(x.Report.TimeStamp,
                     x.Report.WebsiteDataModel.Id,
-                    x.Report.WebsiteDataModel.WebisteUrl,
+                    x.Report.WebsiteDataModel.Name,
                     x.Report.Id,
                     x.Id,
                     x.Adres,

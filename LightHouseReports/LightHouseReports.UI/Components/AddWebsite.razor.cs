@@ -27,11 +27,7 @@ public partial class AddWebsite
             var result = await ValidateInput();
             if (result.IsValid)
             {
-                var baseUri = new UriBuilder(_input.Website).Uri;
-                var siteMapUri = new Uri(baseUri, "sitemap.xml");
-                var sitmapResult = await Mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(siteMapUri.ToString()));
-
-                await Mediator.Send(new AddWebsiteDataModel(new WebsiteDataModel(Guid.NewGuid(), _input.Website, sitmapResult.Value.Locs.Count)));
+                await Mediator.Send(new AddWebsiteDataModel(_input.ToNewDataModel()));
                 _input = new Input();
                 MudDialog.Close(DialogResult.Ok(true));
             }
@@ -60,8 +56,10 @@ public partial class AddWebsite
 
     private void ClearValidationMessages()
     {
-        var value = _input.Website;
-        _input = new Input { Website = value };
+        var website = _input.Website;
+        var name = _input.Name;
+        var sitemaps = _input.Sitemaps;
+        _input = new Input { Website = website, Name = name, Sitemaps = sitemaps };
     }
 
     private async Task<ValidationResult> ValidateInput()
@@ -95,6 +93,14 @@ public partial class AddWebsite
         public string Name { get; set; }
         public string Website { get; set; } = string.Empty;
         public string Sitemaps { get; set; } = string.Empty;
+        public string[] ParsedSitemaps => Sitemaps.Split(",", StringSplitOptions.RemoveEmptyEntries);
+
+        public int FoundUrls { get; set; }
+
+        public WebsiteDataModel ToNewDataModel()
+        {
+            return new WebsiteDataModel(Guid.NewGuid(), Name, Website, ParsedSitemaps, FoundUrls);
+        }
     }
 
     public class Validator : AbstractValidator<Input>
@@ -111,6 +117,8 @@ public partial class AddWebsite
                     var siteMapUri = new Uri(baseUri, "sitemap.xml");
                     var result = await mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(siteMapUri.ToString()));
                     if (result.IsFailed) context.AddFailure("Can't access the sitemap");
+                    else
+                        context.InstanceToValidate.FoundUrls += result.Value.Locs.Count;
                 }
                 catch (Exception)
                 {
@@ -130,6 +138,8 @@ public partial class AddWebsite
                         var siteMapUri = new Uri(baseUri, "sitemap.xml");
                         var result = await mediator.Request<GetSitemapCoreModel, Result<SitemapCoreModel>>(new GetSitemapCoreModel(siteMapUri.ToString()));
                         if (result.IsFailed) context.AddFailure($"Can't access the sitemap {sitemap}");
+                        else
+                            context.InstanceToValidate.FoundUrls += result.Value.Locs.Count;
                     }
                 }
                 catch (Exception)

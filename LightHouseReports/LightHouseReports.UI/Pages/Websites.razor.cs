@@ -34,7 +34,7 @@ public partial class Websites : IHandle<WebsitesUpdate>, IHandle<ReportProgressU
         }
         else
         {
-            _model = new ViewModel(result.Value);
+            _model = new ViewModel(result.Value.Where(x => !x.IsArchived).ToList());
             _isLoading = false;
         }
     }
@@ -99,21 +99,21 @@ public partial class Websites : IHandle<WebsitesUpdate>, IHandle<ReportProgressU
         public ViewModel(List<WebsiteCoreModel> websiteModels)
         {
             CountOfWebsites = websiteModels.Count();
-            TableDatas = websiteModels.Select(x => new TableData(x.Url, x.Id, x.LastRun, x.FoundUrls, x.ProgressReport)).ToList();
+            TableDatas = websiteModels.Select(x => new TableData(x.Name, x.Id, x.LastRun, x.FoundUrls, x.ProgressReport)).ToList();
         }
     }
 
     private class TableData
     {
         public Guid Id { get; set; }
-        public string Url { get; set; }
+        public string Name { get; set; }
         public int UrlsFound { get; set; }
         public DateTimeOffset? LastRun { get; set; }
         public ProgressCoreModel? ProgressReport { get; set; }
 
-        public TableData(string url, Guid id, DateTimeOffset? lastRun, int urlsFound, ProgressCoreModel? progressReport)
+        public TableData(string name, Guid id, DateTimeOffset? lastRun, int urlsFound, ProgressCoreModel? progressReport)
         {
-            Url = url;
+            Name = name;
             Id = id;
             LastRun = lastRun;
             UrlsFound = urlsFound;

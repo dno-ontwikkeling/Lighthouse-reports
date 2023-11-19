@@ -5,9 +5,13 @@ namespace LightHouseReports.Core.Interfaces.Models;
 public class WebsiteCoreModel
 {
     public Guid Id { get; set; }
-    public string Url { get; set; }
+    public string Name { get; set; }
+
+    public string WebsiteUrl { get; set; }
+    public List<string> SiteMaps { get; set; }
     public DateTimeOffset? LastRun { get; set; }
     public int FoundUrls { get; set; }
+    public bool IsArchived { get; set; } = false;
     public ProgressCoreModel? ProgressReport { get; set; }
 
     public WebsiteCoreModel()
@@ -17,15 +21,18 @@ public class WebsiteCoreModel
     public WebsiteCoreModel(WebsiteDataModel dataModel, ProgressCoreModel? progressReport)
     {
         Id = dataModel.Id;
-        Url = dataModel.WebisteUrl;
+        Name = dataModel.Name;
+        WebsiteUrl = dataModel.WebisteUrl;
+        SiteMaps = dataModel.SiteMaps;
         LastRun = dataModel.LastRun;
         FoundUrls = dataModel.FoundUrls;
+        IsArchived = dataModel.IsArchived;
         ProgressReport = progressReport;
     }
 
-    public WebsiteCoreModel(string url, Guid id, DateTimeOffset? lastRun = null)
+    public WebsiteCoreModel(string websiteUrl, Guid id, DateTimeOffset? lastRun = null)
     {
-        Url = url;
+        WebsiteUrl = websiteUrl;
         Id = id;
         LastRun = lastRun;
     }

@@ -13,13 +13,13 @@
         Please add a website
     </NoRecordsContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Url)">Website</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Url)">Pages</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Name)">Website</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.Name)">Pages</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<TableData, object>(x=>x.LastRun)">Last run</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="WebsiteCoreModelDataModel">@context.Url</MudTd>
+        <MudTd DataLabel="WebsiteCoreModelDataModel">@context.Name</MudTd>
         <MudTd DataLabel="foundUrlDataModels">@context.UrlsFound</MudTd>
         <MudTd DataLabel="Last run">
             @if (context.LastRun != null)

@@ -1,4 +1,5 @@
-﻿using LightHouseReports.Data.Interfaces.Models;
+﻿using LightHouseReports.Data.Configurations;
+using LightHouseReports.Data.Interfaces.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LightHouseReports.Data;
@@ -20,8 +21,6 @@ public class AppContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ReportDataModel>().Navigation(x => x.WebsiteDataModel).AutoInclude();
-        modelBuilder.Entity<UrlReportDataModel>().Navigation(x => x.Report).AutoInclude();
-        modelBuilder.Entity<UrlReportDataModel>().Navigation(x => x.Results).AutoInclude();
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppContext).Assembly);
     }
 }
